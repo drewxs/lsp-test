@@ -1,0 +1,15 @@
+{
+  "name": "lsp-test-server",
+  "description": "LSP test server",
+  "version": "0.0.1",
+  "author": "Andrew X. Shah <drewshah0@gmail.com> (https://github.com/drewxs)",
+  "license": "MIT",
+  "engines": {
+    "node": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/drewxs/lsp-test.git"
+  },
+  "dependencies": {}
+}
