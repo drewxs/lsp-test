@@ -1,55 +1,17 @@
 # LSP Test
 
-The language server will run on _every_ file type by default. To target specific languages, change
+The language server will run on _every_ file type by default.
+To target specific languages, change `package.json`'s `activationEvents` to something like
 
-`package.json`'s `activationEvents` to something like
-
-```
+```json
 "activationEvents": [
   "onLanguage:plaintext"
 ],
 ```
 
-And change the `documentSelector` in `client/src/extension.ts` to replace the `*` (e.g.)
+## Overview
 
 ```
-documentSelector: [{ scheme: "file", language: "plaintext" }],
-```
-
-## Developing your extension
-
-To help verify everything is working properly, we've included the following code in `server.ts` after the `onInitialize` function:
-
-```typescript
-documents.onDidChangeContent((change) => {
-  connection.window.showInformationMessage(
-    "onDidChangeContent: " + change.document.uri,
-  );
-});
-```
-
-From the root directory of this project, run `code .` Then in VS Code
-
-1. Build the extension (both client and server) with `⌘+shift+B` (or `ctrl+shift+B` on windows)
-2. Open the Run and Debug view and press "Launch Client" (or press `F5`). This will open a `[Extension Development Host]` VS Code window.
-3. Opening or editing a file in that window should show an information message in VS Code like you see below.
-
-   ![example information message](https://semanticart.com/misc-images/minimum-viable-vscode-language-server-extension-info-message.png)
-
-4. Edits made to your `server.ts` will be rebuilt immediately but you'll need to "Launch Client" again (`⌘-shift-F5`) from the primary VS Code window to see the impact of your changes.
-
-[Debugging instructions can be found here][debug]
-
-## Distributing your extension
-
-Read the full [Publishing Extensions doc][publish] for the full details.
-
-Note that you can package and distribute a standalone `.vsix` file without publishing it to the marketplace by following [these instructions][vsix].
-
-## Anatomy
-
-```
-.
 ├── .vscode
 │   ├── launch.json         // Tells VS Code how to launch our extension
 │   └── tasks.json          // Tells VS Code how to build our extension
@@ -71,6 +33,30 @@ Note that you can package and distribute a standalone `.vsix` file without publi
 │   └── tsconfig.json       // TypeScript config for the client
 └── tsconfig.json           // Top-level TypeScript config
 ```
+
+## Developing
+
+Neovim:
+
+```lua
+-- ~/.config/nvim/ftplugin/<filetype>.lua
+vim.lsp.start({
+  name = "LSP Test",
+  cmd = {
+    "npx",
+    "ts-node",
+    vim.fn.expand("~/path/to/lsp-test/server/src/server.ts"),
+  },
+  capabilities = vim.lsp.protocol.make_client_capabilities(),
+})
+```
+
+VS Code:
+
+- Build: `npm run compile` or `ctrl(cmd)+shift+b`
+- Launch: `[Extension Development Host]` via `Run and Debug` or `F5`
+
+Useful links: [debug], [sample], [publish], [vsix]
 
 [debug]: https://code.visualstudio.com/api/language-extensions/language-server-extension-guide#debugging-both-client-and-server
 [sample]: https://github.com/microsoft/vscode-extension-samples/tree/main/lsp-sample
