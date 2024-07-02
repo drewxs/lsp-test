@@ -12,7 +12,7 @@ interface InitializeResult {
 
 export const initialize = (msg: RequestMessage): InitializeResult => {
   return {
-    capabilities: { completionProvider: {} },
+    capabilities: { completionProvider: {}, textDocumentSync: 1 },
     severInfo: {
       name: "lsp-test",
       version: "0.0.1",
